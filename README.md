@@ -1,6 +1,6 @@
 # Terminal memory game
 
-This is a simple project to play a memory game in the terminal.
+This is a simple project to play a memory in the terminal.
     
 ## Installation
 
