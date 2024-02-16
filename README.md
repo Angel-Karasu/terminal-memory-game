@@ -6,7 +6,7 @@ This is a simple project to play a memory game in the terminal.
 
 If you want to play, clone this repository and compile it using make command
 ```shell
-git clone https://github.com/Angel-Karasu/traveling-salesman-problem.git;
+git clone https://github.com/Angel-Karasu/terminal-memory-game.git;
 cd terminal-memory-game;
 make all;
 ./memory;
