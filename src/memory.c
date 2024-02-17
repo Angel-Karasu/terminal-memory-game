@@ -114,4 +114,9 @@ void play() {
         choose_card();
         printf("\n");
     }
+
+    show_best_player();
+
+    free(board.cards);
+    free(board.cards_found);
 }
