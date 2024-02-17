@@ -17,7 +17,7 @@ make all;
 1. Run the executable file : `memory`
 2. Prepare the game :
   - Choose the number of players, must be higher than 1
-  - Choose the number of different cards in the game, must be between 1 and number of cards
+  - Choose the number of different cards in the game, must be between 2 and number of cards
 3. Player's turn :
   - Select the first card that you want to see with its number
   - Select the second card that you want to see with its number

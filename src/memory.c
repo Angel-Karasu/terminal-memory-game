@@ -32,12 +32,12 @@ void init_board() {
 
     init_players();
     board.actual_player = 0;
-    
+
     do {
         board.nb_cards = 1;
-        printf("Choose the number of different cards in the game ⟦1; %d⟧ : ", nb_cards);
+        printf("Choose the number of different cards in the game ⟦2; %d⟧ : ", nb_cards);
         scanf("%d", &(board.nb_cards));
-    } while (board.nb_cards < 1 || board.nb_cards > nb_cards);
+    } while (board.nb_cards < 2 || board.nb_cards > nb_cards);
     board.nb_cards *= 2;
 
     board.cards = (int*)malloc(sizeof(int)*board.nb_cards);
