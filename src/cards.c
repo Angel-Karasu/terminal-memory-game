@@ -85,14 +85,3 @@ char *card_pack[] = {"\
 | ^ ^ |\n\
 |____h|"
 };
-
-void shuffle_cards() {
-    unsigned int nb_cards = sizeof(card_pack)/sizeof(card_pack[0]);
-
-    for (unsigned int i=0; i<nb_cards; i++) {
-        int r = rand() % nb_cards;
-        char *temp = card_pack[r];
-        card_pack[r] = card_pack[i];
-        card_pack[i] = temp;
-    }
-}

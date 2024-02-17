@@ -25,6 +25,15 @@ void shuffle_board() {
     }
 }
 
+void shuffle_cards() {
+    for (int i=0; i<nb_cards; i++) {
+        int r = rand() % nb_cards;
+        char *temp = card_pack[r];
+        card_pack[r] = card_pack[i];
+        card_pack[i] = temp;
+    }
+}
+
 void init_board() {
     srand(time(NULL));
 
