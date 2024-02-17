@@ -98,8 +98,7 @@ typedef struct {
     int nb_cards_found;
 } memory;
 
-int nb_players;
-int *player_scores;
+int nb_players, *player_scores;
 void init_players() {
     do {
         nb_players = 1;
@@ -134,6 +133,8 @@ void shuffle(int* list, int length) {
 }
 
 memory generate_memory() {
+    shuffle_cards();
+
     int nb_cards;
     do {
         nb_cards = 1;
@@ -204,7 +205,7 @@ void choose_card(memory* memory) {
 }
 
 void best_player() {
-    int i_best_player; int score_best_player = 0;
+    int i_best_player, score_best_player = 0;
     for (int i=0; i<nb_players; i++) if (player_scores[i] > score_best_player) {
         score_best_player = player_scores[i];
         i_best_player = i;
@@ -215,7 +216,6 @@ void best_player() {
 int main() {
     char play = 'y';
     while (play == 'y') {
-        shuffle_cards();
         init_players();
         memory memory = generate_memory();
 
