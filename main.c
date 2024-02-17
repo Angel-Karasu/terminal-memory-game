@@ -170,7 +170,7 @@ void show_memory(memory memory) {
 }
 
 void choose_card(memory* memory) {
-    printf("Player %d must play\n", memory->actual_player);
+    printf("Player %d must play\n", memory->actual_player+1);
     int c1, c2;
 
     do {
@@ -212,7 +212,7 @@ void best_player() {
             i_best_player = i;
         }
     }
-    printf("The best player is the player %d with %d points !!!\n", i_best_player, score_best_player);
+    printf("The best player is the player %d with %d points !!!\n", i_best_player+1, score_best_player);
 }
 
 int main() {
@@ -233,8 +233,9 @@ int main() {
 
         free(player_scores);
         free(memory.board);
+        free(memory.cards_found);
 
-        printf("Play again ? (Y/N) : "); scanf("%c", &play);
+        printf("Play again ? (Y/N) : "); scanf(" %c", &play);
     }
 
    return 0;
