@@ -165,10 +165,11 @@ bool card_is_found(int c, int *cards_found, int nb_cards_found) {
 }
 
 void show_memory(memory memory) {
+    printf("╶───╴\n");
     for (int i=0; i<memory.nb_cards; i++) {
-        if (card_is_found(i, memory.cards_found, memory.nb_cards_found)) printf("│XXX│");
-        else printf("│%d│", i);
-        printf("\n");
+        if (card_is_found(i, memory.cards_found, memory.nb_cards_found)) printf("│X");
+        else printf("│%d", i);
+        if (i%2 == 1) printf("│\n╶───╴\n");
     }
 }
 
