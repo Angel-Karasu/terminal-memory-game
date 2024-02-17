@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 
 int nb_players, *player_scores;
