@@ -196,10 +196,10 @@ void choose_card(memory* memory) {
         memory->cards_found[memory->nb_cards_found] = c1;
         memory->cards_found[memory->nb_cards_found+1] = c2;
         memory->nb_cards_found += 2;
-        printf("You found a pair\n");
+        printf("\nYou found a pair\n");
     } else {
         memory->actual_player = (memory->actual_player+1)%nb_players;
-        printf("You didn't find a pair\n");
+        printf("\nYou didn't find a pair\n");
     }
 }
 
