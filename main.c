@@ -96,10 +96,9 @@ typedef struct { int x, y; } couple;
 
 typedef struct {
     int actual_player;
-    int nb_rows;
-    int nb_columns;
-    int** board;
-    couple* cards_found;
+    int nb_cards;
+    int *board;
+    int *cards_found;
     int nb_cards_found;
 } memory;
 
@@ -139,90 +138,65 @@ void shuffle(int* list, int length) {
 }
 
 memory generate_memory() {
-    int nb_rows, nb_columns, board_size;
-
+    int nb_cards;
     do {
-        nb_rows = 1;
-        printf("Choose number of rows ⟦1; %d⟧ : ", NB_CARDS/2);
-        scanf("%d", &nb_rows);
-    } while (nb_rows < 1 || nb_rows > NB_CARDS/2);
+        nb_cards = 1;
+        printf("Choose the number of different cards in the game ⟦1; %d⟧ : ", NB_CARDS);
+        scanf("%d", &nb_cards);
+    } while (nb_cards < 1 || nb_cards > NB_CARDS);
+    nb_cards *= 2;
 
-    do {
-        nb_columns = 1;
-        printf("Choose number of columns ⟦1;%d⟧ : ", NB_CARDS/nb_rows);
-        scanf("%d", &nb_columns);
-    } while (nb_columns < 1 || nb_columns > NB_CARDS/nb_rows);
-    
-    if (nb_rows%2 != 0 || nb_columns%2 != 0) {
-        nb_columns++;
-        printf("Number of columns increased by 1 for an even number of cards\n\n");
+    int* board = (int*)malloc(sizeof(int)*nb_cards);
+    for (int i=0; i<nb_cards/2; i++) {
+        board[i*2] = i;
+        board[i*2+1] = i;
     }
-    board_size = nb_columns*nb_rows;
+    shuffle(board, nb_cards);
+    int *cards_found = (int*)malloc(sizeof(int)*nb_cards);
 
-    int** board = (int**)malloc(sizeof(int*)*nb_rows);
-    int* values_cards = (int*)malloc(sizeof(int)*board_size);
-    for (int i=0; i<board_size/2; i++) { values_cards[i*2]=i; values_cards[i*2+1]=i; }
-    shuffle(values_cards, board_size);
-    for (int i=0; i<nb_rows; i++) {
-        board[i] = (int*)malloc(sizeof(int)*nb_columns);
-        for (int j=0; j<nb_columns; j++) board[i][j] = values_cards[i*(nb_rows+1)+j];
-    }
-    free(values_cards);
-    couple* cards_found = (couple*)malloc(sizeof(couple)*board_size);
-
-    memory memory = {0, nb_rows, nb_columns, board, cards_found, 0};
+    memory memory = {0, nb_cards, board, cards_found, 0};
 
     return memory;
 }
 
-bool card_is_found(int i, int j, couple* cards_found, int nb_cards_found) {
-    for (int c=0; c<nb_cards_found; c++) if (i == cards_found[c].x && j == cards_found[c].y) return true;
+bool card_is_found(int c, int *cards_found, int nb_cards_found) {
+    for (int i=0; i<nb_cards_found; i++) if (c == cards_found[i]) return true;
     return false;
 }
 
 void show_memory(memory memory) {
-    for (int i=0; i<memory.nb_rows; i++) {
-        for (int j=0; j<memory.nb_columns; j++) printf("╶───╴");
-        printf("\n");
-        for (int j=0; j<memory.nb_columns; j++) {
-            if (card_is_found(i, j, memory.cards_found, memory.nb_cards_found) == 1) printf("│XXX│");
-            else printf("│%d,%d│", i, j);
-        }
-        printf("\n");
-        for (int j=0; j<memory.nb_columns; j++) printf("╶───╴");
+    for (int i=0; i<memory.nb_cards; i++) {
+        if (card_is_found(i, memory.cards_found, memory.nb_cards_found)) printf("│XXX│");
+        else printf("│%d│", i);
         printf("\n");
     }
 }
 
 void choose_card(memory* memory) {
     printf("Player %d must play\n", memory->actual_player);
-    int i1, j1, i2, j2;
+    int c1, c2;
 
     do {
-        i1 = 0;
-        j1 = 0;
-        printf("Choose 1st card (i,j) : ");
-        scanf("%d,%d", &i1,&j1);
-    } while (i1 < 0 || j1 < 0 || i1 >= memory->nb_rows || j1 >= memory->nb_columns || card_is_found(i1, j1, memory->cards_found, memory->nb_cards_found));
+        c1 = 0;
+        printf("Choose 1st card : ");
+        scanf("%d", &c1);
+    } while (c1 < 0 || c1 > memory->nb_cards || card_is_found(c1, memory->cards_found, memory->nb_cards_found));
 
-    int card1 = memory->board[i1][j1];
+    int card1 = memory->board[c1];
     printf("%s\n", cards[card1]);
 
     do {
-        i2 = 0;
-        j2 = 0;
-        printf("Choose 2nd card (i,j) : ");
-        scanf("%d,%d", &i2,&j2);
-    } while (i2 < 0 || j2 < 0 || i2 >= memory->nb_rows || j2 >= memory->nb_columns || (i2 == i1 && j2 == j1) || card_is_found(i2, j2, memory->cards_found, memory->nb_cards_found));
+        c2 = 0;
+        printf("Choose 2nd card : ");
+        scanf("%d", &c2);
+    } while (c2 < 0 || c2 > memory->nb_cards || c2 == c1 || card_is_found(c2, memory->cards_found, memory->nb_cards_found));
 
-    int card2 = memory->board[i2][j2];
+    int card2 = memory->board[c2];
     printf("%s\n", cards[card2]);
 
     if (card1 == card2) {
         player_scores[memory->actual_player]++;
-        couple c1 = {i1,j1};
         memory->cards_found[memory->nb_cards_found] = c1;
-        couple c2 = {i2,j2};
         memory->cards_found[memory->nb_cards_found+1] = c2;
         memory->nb_cards_found += 2;
         printf("You found a pair\n");
@@ -251,7 +225,7 @@ int main() {
         init_players();
         memory memory = generate_memory();
 
-        while (memory.nb_cards_found < memory.nb_rows*memory.nb_columns) {
+        while (memory.nb_cards_found < memory.nb_cards) {
             show_memory(memory);
             choose_card(&memory);
             printf("\n");
@@ -261,7 +235,6 @@ int main() {
         best_player(memory);
 
         free(player_scores);
-        for (int i=0; i<memory.nb_rows; i++) free(memory.board[i]);
         free(memory.board);
 
         printf("Play again ? (Y/N) : "); scanf(" %c", &play);
