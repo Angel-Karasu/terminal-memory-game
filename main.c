@@ -1,8 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <sys/random.h>
 #include <time.h>
 
 /* Change values to those desired */
@@ -91,8 +89,6 @@ char *cards[] = {"\
 |____h|"
 };
 /* */
-
-typedef struct { int x, y; } couple;
 
 typedef struct {
     int actual_player;
@@ -238,7 +234,7 @@ int main() {
         free(player_scores);
         free(memory.board);
 
-        printf("Play again ? (Y/N) : "); scanf(" %c", &play);
+        printf("Play again ? (Y/N) : "); scanf("%c", &play);
     }
 
    return 0;
