@@ -6,7 +6,7 @@
 /* Change values to those desired */
 #define NB_CARDS 15
 
-char *cards[] = {"\
+char *card_pack[] = {"\
       /\\\n\
      /  \\\n\
     /`'.,\\\n\
@@ -116,9 +116,9 @@ void shuffle_cards() {
 
     for (int i=0; i<NB_CARDS; i++) {
         int r = rand() % NB_CARDS;
-        char *temp = cards[r];
-        cards[r] = cards[i];
-        cards[i] = temp;
+        char *temp = card_pack[r];
+        card_pack[r] = card_pack[i];
+        card_pack[i] = temp;
     }
 }
 
@@ -180,7 +180,7 @@ void choose_card(memory* memory) {
     } while (c1 < 0 || c1 > memory->nb_cards || card_is_found(c1, memory->cards_found, memory->nb_cards_found));
 
     int card1 = memory->board[c1];
-    printf("%s\n", cards[card1]);
+    printf("%s\n", card_pack[card1]);
 
     do {
         c2 = 0;
@@ -189,7 +189,7 @@ void choose_card(memory* memory) {
     } while (c2 < 0 || c2 > memory->nb_cards || c2 == c1 || card_is_found(c2, memory->cards_found, memory->nb_cards_found));
 
     int card2 = memory->board[c2];
-    printf("%s\n", cards[card2]);
+    printf("%s\n", card_pack[card2]);
 
     if (card1 == card2) {
         player_scores[memory->actual_player]++;
@@ -204,20 +204,17 @@ void choose_card(memory* memory) {
 }
 
 void best_player() {
-    int i_best_player = 0;
-    int score_best_player = player_scores[i_best_player];
-    for (int i=1; i<nb_players; i++) {
-        if (player_scores[i] > score_best_player) {
-            score_best_player = player_scores[i];
-            i_best_player = i;
-        }
+    int i_best_player; int score_best_player = 0;
+    for (int i=0; i<nb_players; i++) if (player_scores[i] > score_best_player) {
+        score_best_player = player_scores[i];
+        i_best_player = i;
     }
     printf("The best player is the player %d with %d points !!!\n", i_best_player+1, score_best_player);
 }
 
 int main() {
-    char play = 'Y';
-    while (play == 'Y') {
+    char play = 'y';
+    while (play == 'y') {
         shuffle_cards();
         init_players();
         memory memory = generate_memory();
@@ -229,13 +226,13 @@ int main() {
         }
         printf("\nEnd of game !!!\n");
 
-        best_player(memory);
+        best_player();
 
         free(player_scores);
         free(memory.board);
         free(memory.cards_found);
 
-        printf("Play again ? (Y/N) : "); scanf(" %c", &play);
+        printf("Play again ? (y/n) : "); scanf(" %c", &play);
     }
 
    return 0;
