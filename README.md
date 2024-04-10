@@ -4,12 +4,11 @@ This is a simple project to play a memory in the terminal.
     
 ## Installation
 
-If you want to play, clone this repository and compile it using make command
+Clone this repository and compile it using make command
 ```shell
 git clone https://github.com/Angel-Karasu/terminal-memory-game.git;
 cd terminal-memory-game;
 make all;
-./memory;
 ```
 
 ## How to Play
