@@ -6,7 +6,7 @@ This is a simple project to play a memory in the terminal.
 
 Clone this repository and compile it using make command
 ```shell
-git clone https://github.com/Angel-Karasu/terminal-memory-game.git;
+git clone https://codeberg.org/Angel-Karasu/terminal-memory-game.git;
 cd terminal-memory-game;
 make all;
 ```
